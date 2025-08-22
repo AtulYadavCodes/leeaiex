@@ -89,7 +89,6 @@ async function main() {
     model: "gemini-2.5-flash",
     contents: value + req.body,
   });
-  console.log(response.text);
   res.send(response.text);
 }catch(error){
     res.send(error.message);
