@@ -33,7 +33,7 @@ function messagecreator(message,typ)
 
  function aibackend(message)
 {
-   fetch("http://localhost:3000/backend",{
+   fetch("https://leeaiex.onrender.com/backend",{
     method:"POST",
     headers:{"Content-Type":"text/plain"} ,
     body:message   
