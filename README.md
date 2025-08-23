@@ -52,12 +52,4 @@ It’s like having a **smart tutor inside your browser**, giving hints and expla
 4. View hints or type your own question  
 5. AI responses appear in the chat window, styled and scrollable  
 
-### Backend Flow
-1. Extension sends POST request to `/backend` with:
-   - LeetCode URL + hint1/2/3  
-   - Or a custom message  
-2. Node.js backend calls **Google Gemini AI** with structured prompt  
-3. AI generates **HTML response** with hints or explanation  
-4. Frontend displays the response in the chat box  
-
 ---
