@@ -21,10 +21,10 @@ It’s like having a **smart tutor inside your browser**, giving hints and expla
 ## 🖼️ Screenshots  
 
 ### Floating Button
-![Button](images/button.png)
+![Button](Screenshot 2025-08-23 154758.png)
 
 ### Chat Window
-![Chat Window](images/chatbox.png)
+![Chat Window](Screenshot 2025-08-23 154758.png)
 
 ### Sample Hint
 ![Sample Hint](images/hint.png)
