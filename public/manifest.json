@@ -1,0 +1,19 @@
+{
+  "name": "LeeAiex",
+  "version": "1.0.0",
+  "description": "React sidebar for AI assistant",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://leetcode.com/problems/*"], 
+      "js": ["button.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
