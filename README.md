@@ -83,7 +83,7 @@ This will generate a `dist/` folder for the Chrome extension.
 
 ## 🧪 Usage
 
-* Open [LeetCode](https://leetcode.com)
+* Open [LeetCode](https://leetcode.com/problems)
 * Click the **LeeAIEx floating button**
 * The **AI Tutor sidebar** will appear
 * Ask for **hints, explanations, or step-by-step solutions**
@@ -91,16 +91,12 @@ This will generate a `dist/` folder for the Chrome extension.
 ---
 
 ## 📸 Screenshots
+screenshot1.png
+screenshot2.png
+screenshot3.png
+screenshot4.png
+screenshot5.png
 
-*(Add screenshots or GIFs of the extension here)*
-
-Example:
-
-```markdown
-![LeeAIEx Demo](assets/demo.gif)
-```
-
----
 
 ## 🤝 Contributing
 
