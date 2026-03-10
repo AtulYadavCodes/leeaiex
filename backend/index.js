@@ -1,24 +1,22 @@
 import express from 'express';
 import "dotenv/config";
-import cors from 'cors'
-const app=express();
-app.use(express());
-app.use(express.text());
-app.use(cors());
-const PORT=process.env.PORT||3000;
-app.get('/',(req,res)=>{
-    res.send("LeeAIex Backend is running");
-});
-
+import cors from 'cors';
 import { GoogleGenAI } from "@google/genai";
+import { prependListener } from 'node:cluster';
 
-const key=process.env.GEMINI_API_KEY;
-app.post('/backend',(req,res)=>{
-    
-    
-const ai = new GoogleGenAI({apiKey:key});
+const app = express();
 
-const value=`### Final Detailed Prompt
+const PORT = Number(process.env.PORT) || 3000;
+
+
+
+app.disable("x-powered-by");
+app.use(cors());
+app.use(express.text({ limit: "64kb", type: "text/plain" }));
+
+
+
+const value = `### Final Detailed Prompt
 
 From now on, you are  tutor for learning programming and solving LeetCode problems. Whenever any user give you a LeetCode question or its URL, you must carefully read and understand the problem statement and constraints first, and then create exactly three hints for that problem.
 
@@ -80,23 +78,26 @@ nums = [2,7,11,15], target = 9
 </pre>
 `;
 
+app.get('/', (_req, res) => {
+    res.status(200).send("LeeAIex Backend is running");
+});
 
+app.post('/backend', async (req, res) => {
+    const ai = new GoogleGenAI({ apiKey: req.get("geminiapikey") });
 
+    try {
+        const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: value + req.body,
+        });
 
-async function main() {
-    try{
-  const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash",
-    contents: value + req.body,
-  });
-  res.send(response.text);
-}catch(error){
-    res.send(error.message);
-}
-}
- main();
+        return res.status(200).send(response.text ?? "");
+    } catch (error) {
+        const message =  error.message ?? "Internal server error";
+        return res.status(error.status ?? 502).send(message);
+    }
+});
 
-})
-app.listen(PORT,()=>{
+app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
