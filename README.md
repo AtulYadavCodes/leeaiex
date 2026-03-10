@@ -1,106 +1,107 @@
-# 🚀 LeeAIEx – AI Tutor for LeetCode
+# LeeAIEx
 
-LeeAIEx is a **Chrome extension** that enhances your LeetCode experience by injecting a **smart AI tutor** directly into the platform.
-It adds a **floating button** and a **sidebar** where you can ask for hints, explanations, and step-by-step solutions powered by **Google Gemini API**.
+LeeAIEx is a Chrome extension that adds an AI assistant to LeetCode problem pages.
 
----
+It provides:
 
-## ✨ Features
+- A popup to save your Gemini API key.
+- A floating button on LeetCode problems.
+- A right-side chat panel for progressive hints and custom questions.
 
-* 🧑‍🏫 **AI Tutor** – Get hints, explanations, and solution breakdowns for LeetCode problems.
-* ⚡ **Seamless Integration** – Injected button + sidebar inside the LeetCode UI.
-* 🖥️ **Modern Tech Stack** – Built with **React (frontend)**, **Node.js + Express (backend)**.
-* 🔑 **Gemini API Support** – Uses Google’s Gemini AI for natural, high-quality answers.
-* 🛠️ **Customizable** – Easy to extend with new AI prompts or UI improvements.
+## Features
 
----
+- LeetCode integration through a content script on problem pages.
+- Hint-first flow: users can request hints before custom chat input appears.
+- Gemini API key stored in Chrome extension local storage.
+- Backend proxy support with Express and Google GenAI.
 
-## 🏗️ Project Structure
+## Project Structure
 
-```
+```text
 leeaiex/
-│── public/        #  Chrome extension UI (button + sidebar) + manifest.json
-│── backend/         # Node.js + Express server (handles Gemini API calls)
-│── public/          # Assets (icons, static files)
+|- public/
+|  |- manifest.json
+|  |- popup.html
+|  |- popup.css
+|  |- script.js
+|  |- button.js
+|  |- background.js
+|- backend/
+|  |- index.js
+|  |- package.json
+|- README.md
 ```
 
-**Flow:**
+## How It Works
 
-1. User clicks the injected **AI Tutor button** on LeetCode.
-2. Sidebar opens → user enters query (hint, explanation, etc.).
-3. Frontend → Backend (Express) → Gemini API → Response returned to sidebar.
+1. Open the extension popup and save a Gemini API key.
+2. Visit a LeetCode problem page.
+3. Click Ask LeeAIex floating button.
+4. Use the Hint button or send custom prompts in chat.
+5. The extension sends requests to the backend endpoint and renders the AI response in the sidebar.
 
----
+## Extension Setup (Chrome)
 
-## 🔧 Installation & Setup
+1. Clone this repository.
+2. Open Chrome and go to chrome://extensions.
+3. Enable Developer mode.
+4. Click Load unpacked.
+5. Select the public folder.
 
-### 1️⃣ Clone the Repository
+## Backend Setup (Optional Local Server)
 
-```bash
-git clone https://github.com/AtulYadavCodes/leeaiex.git
-cd leeaiex
-```
+The extension currently calls a hosted endpoint in both popup and chat scripts.
+If you want to run backend locally:
 
-### 2️⃣ Backend Setup
+1. Go to backend folder.
+2. Install dependencies.
+3. Create a .env file.
+4. Start the server.
 
 ```bash
 cd backend
 npm install
 ```
 
-Create a `.env` file:
+Create .env:
 
 ```env
-PORT=5000
+PORT=3000
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-### 3️⃣ Frontend Setup
+Run:
 
 ```bash
-cd ../frontend
-npm install
-npm run build
+npm start
 ```
 
-This will generate a `dist/` folder for the Chrome extension.
+To actually use local backend, update request URLs in:
 
-### 4️⃣ Load Extension in Chrome
+- public/script.js
+- public/button.js
 
-1. Open Chrome and go to `chrome://extensions/`
-2. Enable **Developer Mode**
-3. Click **Load unpacked**
-4. Select the `frontend/dist` folder
+Change:
 
----
+- https://leeaiex.onrender.com/backend
 
-## 🧪 Usage
+To:
 
-* Open [LeetCode](https://leetcode.com/problems)
-* Click the **LeeAIEx floating button**
-* The **AI Tutor sidebar** will appear
-* Ask for **hints, explanations, or step-by-step solutions**
+- http://localhost:3000/backend
 
----
+## Permissions Used
 
-## 📸 Screenshots
-![](screenshot1.png)
-![](screenshot2.png)
-![](screenshot3.png)
-![](screenshot4.png)
-![](screenshot5.png)
+From manifest:
 
+- activeTab
+- scripting
+- storage
 
-## 🤝 Contributing
+## Notes
 
-Contributions are welcome!
+- The popup hides the input/button after an API key is already saved.
+- The backend accepts API key from request header geminiApiKey or from GEMINI_API_KEY env variable.
 
-1. Fork the repo
-2. Create a feature branch
-3. Submit a pull request 🚀
+## License
 
----
-
-## 📜 License
-
-MIT License © 2025 [Atul Yadav](https://github.com/AtulYadavCodes)
+MIT
