@@ -54,7 +54,7 @@ function messagecreator(message,typ)
    fetch("https://leeaiex.onrender.com/backend",{
     method:"POST",
     headers:{"Content-Type":"text/plain",
-         "geminiApiKey": chrome.storage.local.get("geminiApiKey")
+         "geminiApiKey": localStorage.getItem("geminiApiKey")
     } ,
     body:url+message   
 }).then(response=>response.text()).catch(error=>{messagecreator(error.message,"web")})

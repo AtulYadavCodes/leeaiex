@@ -2,12 +2,13 @@
             const apiKeyInput = document.getElementById("apiKeyInput");
 
             // Load saved API key from local storage
-            chrome.storage.local.get(["geminiApiKey"], (result) => {
-                if (result.geminiApiKey) {
+           function keyverif(){
+          result=  localStorage.getItem(["geminiApiKey"])
+                if (result) {
                     apiKeyInput.display = "none";
                     saveButton.display = "none";
                 }
-            });
+            };keyverif();
 
             saveButton.addEventListener("click", () => {
                 const apiKey = apiKeyInput.value.trim();
@@ -26,13 +27,13 @@
                                 throw new Error("API key is invalid. Please enter a valid API key.");
                             else
                             {
-                                chrome.storage.local.set({ geminiApiKey: apiKey }, () => {
+                                localStorage.setItem( 'geminiApiKey', apiKey );
                                 apiKeyInput.value="API key saved successfully!";
-                                apiKeyInput.style.display = "none";
-                                saveButton.style.display = "none";
-                            }
+                              
+                              
                             
-                            );
+                            
+                            
                             }
                         }
                         catch(error)
