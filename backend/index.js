@@ -83,8 +83,13 @@ app.get('/', (_req, res) => {
 });
 
 app.post('/backend', async (req, res) => {
-    console.log(req.get("geminiApiKey"));
-    const ai = new GoogleGenAI({ apiKey: req.get("geminiApiKey") });
+    const apiKey = req.get("geminiApiKey")?.trim() || process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+        return res.status(400).send("Missing Gemini API key. Set geminiApiKey header or GEMINI_API_KEY env var.");
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
 
     try {
         const response = await ai.models.generateContent({
@@ -94,7 +99,7 @@ app.post('/backend', async (req, res) => {
 
         return res.status(200).send(response.text ?? "");
     } catch (error) {
-        const message =  error.message ?? "Internal server error";
+        const message = error instanceof Error ? error.message : "Internal server error";
         return res.status(error.status ?? 502).send(message);
     }
 });

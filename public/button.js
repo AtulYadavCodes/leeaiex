@@ -4,43 +4,15 @@
 
 let url =""; let c=0;
 
+// Get current LeetCode page URL from background script once the content script is ready.
 chrome.runtime.sendMessage({content : "ready"},(response)=>{
     url=response.content;
 });
-function messagecreator(message,typ)
-{
-    console.log(url);
-    const chat=document.createElement("h1");
-    chat.innerHTML=` ${message}`;
-    chat.style.fontSize="12px";
 
-    chat.style.borderRadius="5px";
-    chat.style.marginBottom="10px";
-    if(typ === "user") {
-        chat.style.color="lightgreen";
-     chat.style.border="0.5px solid lightgreen";
-        chat.style.textAlign="right";
-        chat.style.right="0px";
-        chat.style.marginLeft="58px";
-        chat.style.padding="10px";
-        
-
-    } else {
-        chat.style.color="white";
-         chat.style.border="0.5px solid white";
-        chat.style.textAlign="left";
-        chat.style.left="0px";
-        chat.style.marginRight="58px";
-        chat.style.padding="10px";
-        chat.style.paddingLeft="10px";
-    }
-    
-    document.getElementById("leeaiexchatbox").appendChild(chat);
-    document.getElementById("leeaiexchatbox").scrollTop=document.getElementById("leeaiexchatbox").scrollHeight;
-}
-
+// Sends user/hint prompt to backend and appends AI response to the chat panel.
  function aibackend(message)
 {
+    // Loading status shown while waiting for backend response.
     const l=document.createElement("label");
     if(c==1) l.innerHTML=" starting server...Please wait";
     else 
@@ -51,24 +23,60 @@ function messagecreator(message,typ)
     document.getElementById("leeaiexchatbox").appendChild(l);
 
     message=url+message;
-   fetch("https://leeaiex.onrender.com/backend",{
-    method:"POST",
-    headers:{"Content-Type":"text/plain",
-         "geminiApiKey": localStorage.getItem("geminiApiKey")
-    } ,
-    body:url+message   
-}).then(response=>response.text()).catch(error=>{messagecreator(error.message,"web")})
-   .then(datat=>{
-    document.getElementById("leeaiexchatbox").removeChild(l);
-    document.getElementById("hint").disabled=false;
+    // Read saved API key from extension storage and attach it as a request header.
+    chrome.storage.local.get(["geminiApiKey"], (result) => {
+        console.log(result.geminiApiKey);
+        // Backend call for Gemini response.
+        fetch("https://leeaiex.onrender.com/backend",{
+            method:"POST",
+            headers:{"Content-Type":"text/plain",
+                "geminiApiKey": result.geminiApiKey
+            } ,
+            body:url+message
+        }).then(response=>response.text()).catch(error=>{
+            // Render fetch/network error in chat.
+            const chat=document.createElement("h1");
+            chat.innerHTML=` ${error.message}`;
+            chat.style.fontSize="12px";
+            chat.style.borderRadius="5px";
+            chat.style.marginBottom="10px";
+            chat.style.color="white";
+            chat.style.border="0.5px solid white";
+            chat.style.textAlign="left";
+            chat.style.left="0px";
+            chat.style.marginRight="58px";
+            chat.style.padding="10px";
+            chat.style.paddingLeft="10px";
+            document.getElementById("leeaiexchatbox").appendChild(chat);
+            document.getElementById("leeaiexchatbox").scrollTop=document.getElementById("leeaiexchatbox").scrollHeight;
+        })
+            .then(datat=>{
+                // Re-enable input controls and render backend response.
+                document.getElementById("leeaiexchatbox").removeChild(l);
+                document.getElementById("hint").disabled=false;
 
-    document.getElementById("leeaiexinput").disabled=false;
-         messagecreator(datat, "web");
-   })
+                document.getElementById("leeaiexinput").disabled=false;
+                const chat=document.createElement("h1");
+                chat.innerHTML=` ${datat}`;
+                chat.style.fontSize="12px";
+                chat.style.borderRadius="5px";
+                chat.style.marginBottom="10px";
+                chat.style.color="white";
+                chat.style.border="0.5px solid white";
+                chat.style.textAlign="left";
+                chat.style.left="0px";
+                chat.style.marginRight="58px";
+                chat.style.padding="10px";
+                chat.style.paddingLeft="10px";
+                document.getElementById("leeaiexchatbox").appendChild(chat);
+                document.getElementById("leeaiexchatbox").scrollTop=document.getElementById("leeaiexchatbox").scrollHeight;
+            });
+    });
 }
 if(!(document.getElementById("leeaiebutton")))
 {
 
+    // Floating trigger button on LeetCode problem pages.
     const button=document.createElement("button");
     button.id="leeaiebutton";
     button.style.position="fixed";
@@ -211,7 +219,20 @@ if(!(document.getElementById("leeaiebutton")))
                 if(event.key === "Enter") {
                     input.value= input.value.trim();
                     if(input.value != "") {
-                        messagecreator(input.value, "user");
+                        // Render user message before sending to backend.
+                        const chat=document.createElement("h1");
+                        chat.innerHTML=` ${input.value}`;
+                        chat.style.fontSize="12px";
+                        chat.style.borderRadius="5px";
+                        chat.style.marginBottom="10px";
+                        chat.style.color="lightgreen";
+                        chat.style.border="0.5px solid lightgreen";
+                        chat.style.textAlign="right";
+                        chat.style.right="0px";
+                        chat.style.marginLeft="58px";
+                        chat.style.padding="10px";
+                        document.getElementById("leeaiexchatbox").appendChild(chat);
+                        document.getElementById("leeaiexchatbox").scrollTop=document.getElementById("leeaiexchatbox").scrollHeight;
                         aibackend(input.value);
                         input.value="";input.disabled=true;
                     }
@@ -240,7 +261,20 @@ if(!(document.getElementById("leeaiebutton")))
                 c++;
                  if(c==1)  document.getElementById("leeaiexchatbox").innerHTML= "";
                 hint.disabled=true;
-                messagecreator(" hint for this , help me solve this question on screen  ","user");
+                // Render hint request and ask backend for progressive hint.
+                const chat=document.createElement("h1");
+                chat.innerHTML=" hint for this , help me solve this question on screen  ";
+                chat.style.fontSize="12px";
+                chat.style.borderRadius="5px";
+                chat.style.marginBottom="10px";
+                chat.style.color="lightgreen";
+                chat.style.border="0.5px solid lightgreen";
+                chat.style.textAlign="right";
+                chat.style.right="0px";
+                chat.style.marginLeft="58px";
+                chat.style.padding="10px";
+                document.getElementById("leeaiexchatbox").appendChild(chat);
+                document.getElementById("leeaiexchatbox").scrollTop=document.getElementById("leeaiexchatbox").scrollHeight;
                 aibackend("hint"+c, "web");
                 if(c>=3) {
                     input.style.display="block";
