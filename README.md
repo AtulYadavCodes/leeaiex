@@ -26,20 +26,25 @@ Service Layer (Service Worker): Bridges communication between the content script
 
 Orchestration Layer (Node.js Backend): A lightweight proxy that sanitizes inputs and routes prompts to the Google Gemini Pro model.
 
+📸 Screenshots
+
+![LeeAIEx extension screenshot 1](./screenshot1.png)
+![LeeAIEx extension screenshot 2](./screenshot2.png)
+![LeeAIEx extension screenshot 3](./screenshot3.png)
+![LeeAIEx extension screenshot 4](./screenshot4.png)
+
 🛠️ Project Structure
 
 leeaiex/
-├── public/                 # Extension Frontend (Manifest V3)
-│   ├── manifest.json       # Permission & Script declarations
-│   ├── popup.html/css/js   # API Key management UI
-│   ├── button.js           # FAB & DOM Injection logic
-│   └── background.js       # Background service worker
-├── backend/                # Orchestration Proxy
-│   ├── index.js            # Express server & AI logic
-│   └── package.json        # Dependencies (Google Generative AI)
+├── public/ # Extension Frontend (Manifest V3)
+│ ├── manifest.json # Permission & Script declarations
+│ ├── popup.html/css/js # API Key management UI
+│ ├── button.js # FAB & DOM Injection logic
+│ └── background.js # Background service worker
+├── backend/ # Orchestration Proxy
+│ ├── index.js # Express server & AI logic
+│ └── package.json # Dependencies (Google Generative AI)
 └── README.md
-
-
 
 ⚡ Setup & Installation
 
