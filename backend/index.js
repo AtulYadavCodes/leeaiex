@@ -83,7 +83,7 @@ app.get('/', (_req, res) => {
 });
 
 app.post('/backend', async (req, res) => {
-    const ai = new GoogleGenAI({ apiKey: req.get("geminiapikey") });
+    const ai = new GoogleGenAI({ apiKey: req.get("geminiApiKey") });
 
     try {
         const response = await ai.models.generateContent({
