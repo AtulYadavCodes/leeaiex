@@ -3,17 +3,24 @@
 LeeAIEx is a Chrome extension (Manifest V3) that adds an AI assistant to LeetCode problem pages.  
 It follows a hint-first flow: users receive up to 3 progressive hints before custom free-text chat is unlocked.
 
+## Core Differentiators
+
+- **Bring Your Own Key (BYOK), fully user-controlled:** Users provide and manage their own Gemini key in the extension popup, stored in `chrome.storage.local`. This avoids mandatory platform accounts and gives users direct control over their model access.
+- **Context-aware guided chat:** Every request is tied to the active LeetCode problem URL and hint stage (`hint1` -> `hint3`), so responses stay grounded in the current problem instead of generic Q&A.
+- **History-aware interaction model:** The chat experience is stateful at the UI level (progressive hint progression and follow-up flow) so users learn step-by-step before opening full custom chat.
+
 ## Features
 
 - Works on `https://leetcode.com/problems/*`
 - Floating `Ask LeeAIEx` button injected into problem pages
 - Hint gate (`hint1` to `hint3`) before free-form questions
-- Bring-your-own-key support using `chrome.storage.local`
+- Bring-your-own-key (BYOK) key management using `chrome.storage.local`
+- Context-aware chat requests anchored to the current LeetCode problem
 - Node.js backend proxy for Gemini requests
 
 ## How It Works
 
-1. User saves a Gemini API key in the extension popup.
+1. User saves a Gemini API key in the extension popup (BYOK flow).
 2. On LeetCode problem pages, the content script injects a chat UI.
 3. The content script calls the backend endpoint with:
    - prompt text
