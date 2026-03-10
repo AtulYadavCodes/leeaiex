@@ -1,22 +1,39 @@
-<html>
-    <head>
-       
-        <title>
-            LeeAIEx
-        </title>
-    </head>
-    <body style="height: 200px; width: 200px; background-color: antiquewhite;">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeeAIEx</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup-card">
+      <div class="brand-block">
         <h1>LeeAIEx</h1>
-        <p>This extension is designed to help 
-           you solve leetcode questions with AI-powered features.
-          Gemini API key is required to use the extension.
-           Open leetcode.com to use the extension.
-           <br><hr>
-           A button will appear on the right side of the screen when a problem is opened.
-           Click it to get started with AI assistance.
+        <p class="tagline">Your coding partner for LeetCode problem solving.</p>
+      </div>
+
+      <section class="info-block">
+        <p>
+          Add your Gemini API key to activate AI guidance directly on LeetCode.
+          After opening a problem on leetcode.com, an assistant button appears
+          on the right side.
         </p>
-        <input type="text" placeholder="gemini api key here" id="apiKeyInput" style="width: 100%; padding: 5px; margin-bottom: 10px; border-radius: 10%;">
-        <button id="saveApiKeyButton" style="width: 100%; padding: 5px; border-radius: 10%;">Save API Key</button>
-        <script src="script.js"></script>
-    </body>
+      </section>
+
+      <section class="form-block">
+        <label for="apiKeyInput">Gemini API Key</label>
+        <input
+          type="text"
+          placeholder="Paste your API key"
+          id="apiKeyInput"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button id="saveApiKeyButton">Save API Key</button>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
 </html>
