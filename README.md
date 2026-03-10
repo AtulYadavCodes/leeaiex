@@ -6,7 +6,7 @@ It provides:
 
 - A popup to save your Gemini API key.
 - A floating button on LeetCode problems.
-- A right-side chat panel for progressive hints and custom questions.
+- A right-side chat panel with progressive hints, then custom questions.
 
 ## Features
 
@@ -37,7 +37,7 @@ leeaiex/
 1. Open the extension popup and save a Gemini API key.
 2. Visit a LeetCode problem page.
 3. Click Ask LeeAIex floating button.
-4. Use the Hint button or send custom prompts in chat.
+4. Use the Hint button first. After 3 hints, custom text input appears.
 5. The extension sends requests to the backend endpoint and renders the AI response in the sidebar.
 
 ## Extension Setup (Chrome)
