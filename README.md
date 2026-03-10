@@ -19,9 +19,8 @@ It adds a **floating button** and a **sidebar** where you can ask for hints, exp
 
 ```
 leeaiex/
-│── frontend/        # React app for Chrome extension UI (button + sidebar)
+│── public/        #  Chrome extension UI (button + sidebar) + manifest.json
 │── backend/         # Node.js + Express server (handles Gemini API calls)
-│── manifest.json    # Chrome extension config
 │── public/          # Assets (icons, static files)
 ```
 
