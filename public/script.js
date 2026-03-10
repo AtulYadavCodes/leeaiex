@@ -24,11 +24,16 @@
                             });
                             if(!response.ok)
                                 throw new Error("API key is invalid. Please enter a valid API key.");
-                            chrome.storage.local.set({ geminiApiKey: apiKey }, () => {
-                                alert("API key saved successfully!");
+                            else
+                            {
+                                chrome.storage.local.set({ geminiApiKey: apiKey }, () => {
+                                apiKeyInput.value="API key saved successfully!";
                                 apiKeyInput.style.display = "none";
                                 saveButton.style.display = "none";
-                            });
+                            }
+                            
+                            );
+                            }
                         }
                         catch(error)
                         {
