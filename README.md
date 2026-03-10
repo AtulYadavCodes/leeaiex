@@ -8,6 +8,13 @@ It provides:
 - A floating button on LeetCode problems.
 - A right-side chat panel with progressive hints, then custom questions.
 
+## Screenshots
+
+![LeeAIEx Screenshot 1](./screenshot1.png)
+![LeeAIEx Screenshot 2](./screenshot2.png)
+![LeeAIEx Screenshot 3](./screenshot3.png)
+![LeeAIEx Screenshot 4](./screenshot4.png)
+
 ## Features
 
 - LeetCode integration through a content script on problem pages.
@@ -101,13 +108,6 @@ From manifest:
 
 - The popup hides the input/button after an API key is already saved.
 - The backend accepts API key from request header geminiApiKey or from GEMINI_API_KEY env variable.
-
-## Screenshots
-
-![LeeAIEx Screenshot 1](./screenshot1.png)
-![LeeAIEx Screenshot 2](./screenshot2.png)
-![LeeAIEx Screenshot 3](./screenshot3.png)
-![LeeAIEx Screenshot 4](./screenshot4.png)
 
 ## License
 
