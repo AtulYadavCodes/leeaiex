@@ -1,83 +1,113 @@
-LeeAIEx: Context-Aware AI Orchestration for LeetCode
+# LeeAIEx
 
-LeeAIEx is a high-performance Chrome Extension (Manifest V3) designed to transform the LeetCode learning experience. Unlike traditional "solution-bot" tools, LeeAIEx acts as a Socratic Mentor, utilizing a state-gated AI pipeline to provide progressive pedagogical hints before allowing direct interaction.
+LeeAIEx is a Chrome extension (Manifest V3) that adds an AI assistant to LeetCode problem pages.  
+It follows a hint-first flow: users receive up to 3 progressive hints before custom free-text chat is unlocked.
 
-🚀 Key Technical Highlights
+## Features
 
-Socratic State Machine: Engineered a "Hint-First" logic gate that requires 3 progressive hints before unlocking custom chat, optimizing for long-term skill retention.
+- Works on `https://leetcode.com/problems/*`
+- Floating `Ask LeeAIEx` button injected into problem pages
+- Hint gate (`hint1` to `hint3`) before free-form questions
+- Bring-your-own-key support using `chrome.storage.local`
+- Node.js backend proxy for Gemini requests
 
-Stateless Proxy Architecture: Developed a Node.js/Express backend that handles secure Gemini AI orchestration without persisting sensitive user credentials.
+## How It Works
 
-BYOK (Bring Your Own Key) Integration: Implemented a privacy-first model where users manage their own API keys via chrome.storage.local.
+1. User saves a Gemini API key in the extension popup.
+2. On LeetCode problem pages, the content script injects a chat UI.
+3. The content script calls the backend endpoint with:
+   - prompt text
+   - current page URL
+   - API key in `geminiApiKey` request header
+4. Backend forwards request to Gemini (`gemini-2.5-flash`) and returns generated text.
 
-Secure Key Exchange (Proposed): Designed for RSA-2048 asymmetric encryption, where keys are encrypted on the client-side using a server-provided public key, ensuring zero-knowledge transit.
+## Screenshots
 
-Manifest V3 Compliant: Built using the latest extension standards, utilizing service workers and asynchronous message passing for a non-blocking UI.
+![LeeAIEx screenshot 1](./screenshot1.png)
+![LeeAIEx screenshot 2](./screenshot2.png)
+![LeeAIEx screenshot 3](./screenshot3.png)
+![LeeAIEx screenshot 4](./screenshot4.png)
 
-🏗️ System Architecture
+## Project Structure
 
-LeeAIEx operates through a distributed architecture:
-
-Content Layer (Content Scripts): Injects a React-based Floating Action Button (FAB) and handles DOM-scraping of problem descriptions and constraints.
-
-Configuration Layer (Popup): Manages user authentication and API key validation via a dedicated verification endpoint.
-
-Service Layer (Service Worker): Bridges communication between the content script and the external backend proxy.
-
-Orchestration Layer (Node.js Backend): A lightweight proxy that sanitizes inputs and routes prompts to the Google Gemini Pro model.
-
-📸 Screenshots
-
-![LeeAIEx extension screenshot 1](./screenshot1.png)
-![LeeAIEx extension screenshot 2](./screenshot2.png)
-![LeeAIEx extension screenshot 3](./screenshot3.png)
-![LeeAIEx extension screenshot 4](./screenshot4.png)
-
-🛠️ Project Structure
-
+```text
 leeaiex/
-├── public/ # Extension Frontend (Manifest V3)
-│ ├── manifest.json # Permission & Script declarations
-│ ├── popup.html/css/js # API Key management UI
-│ ├── button.js # FAB & DOM Injection logic
-│ └── background.js # Background service worker
-├── backend/ # Orchestration Proxy
-│ ├── index.js # Express server & AI logic
-│ └── package.json # Dependencies (Google Generative AI)
-└── README.md
+|-- public/
+|   |-- manifest.json
+|   |-- popup.html
+|   |-- popup.css
+|   |-- script.js
+|   |-- button.js
+|   `-- background.js
+|-- backend/
+|   |-- index.js
+|   `-- package.json
+|-- screenshot1.png
+|-- screenshot2.png
+|-- screenshot3.png
+|-- screenshot4.png
+`-- README.md
+```
 
-⚡ Setup & Installation
+## Local Setup
 
-Extension (Manual Load)
+### 1) Start Backend
 
-Clone the repository.
+```bash
+cd backend
+npm install
+```
 
-Navigate to chrome://extensions in Google Chrome.
+Create a `.env` file in `backend/`:
 
-Toggle Developer Mode (top right).
+```env
+PORT=3000
+GEMINI_API_KEY=your_gemini_api_key
+```
 
-Click Load Unpacked and select the /public directory.
+Run server:
 
-Backend (Self-Hosting Optional)
+```bash
+npm start
+```
 
-The extension is pre-configured to use a hosted instance. To run your own:
+Backend health check: `GET /`  
+Main AI endpoint: `POST /backend`
 
-cd backend && npm install
+### 2) Load Extension in Chrome
 
-Configure .env with your PORT and GEMINI_API_KEY.
+1. Open `chrome://extensions`
+2. Enable **Developer mode**
+3. Click **Load unpacked**
+4. Select the `public/` folder
 
-Update the endpoint URL in public/script.js and public/button.js.
+### 3) Configure API Key
 
-🔒 Security & Privacy
+1. Click the extension icon
+2. Paste Gemini API key
+3. Click **Save API Key**
 
-LeeAIEx follows the Principle of Least Privilege:
+Note: The current popup verifies the key against `https://leeaiex.onrender.com/backend`.
 
-Zero Persistence: User API keys are never stored on the backend database.
+## Configuration Notes
 
-Encryption in Transit: All communication is handled via HTTPS. Future iterations include RSA-based payload encryption for sensitive headers.
+- If you want to use your own local backend URL, update fetch URLs in:
+  - `public/script.js`
+  - `public/button.js`
+- The extension currently sends requests as `text/plain` from the chat flow.
 
-Scoped Permissions: Only requests access to leetcode.com and storage.
+## Permissions Used
 
-📄 License
+- `activeTab`
+- `scripting`
+- `storage`
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Current Limitations
+
+- Chat rendering uses `innerHTML` for backend responses, so HTML returned by the model is injected directly.
+- Endpoint URLs are hardcoded in frontend scripts.
+- No automated tests are included yet.
+
+## License
+
+No license file is currently present in this repository. Add a `LICENSE` file if you want to define usage terms.
